@@ -1,0 +1,51 @@
+<div class="container">
+  <h2 class="my-4">Audits List</h2>
+  
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by Audit Company ID or Property ID"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilters()"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Audit ID</th>
+            <th>Audit Date</th>
+            <th class="col-2">Audit Company ID</th>
+            <th class="col-2">Property ID</th>
+            <th>Status</th>
+            <th class="col-2">Assessment Type</th>
+            <th class="col-2">Completed Date</th>
+            <th class="col-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let audit of filteredAudits">
+            <td>{{ audit.auditId }}</td>
+            <td>{{ audit.auditDate }}</td>
+            <td>{{ audit.auditCompanyId }}</td>
+            <td>{{ audit.propertyId }}</td>
+            <td>{{ audit.status }}</td>
+            <td>{{ audit.assessmentTypeId }}</td>    
+            <td>{{ audit.completedDate }}</td>
+            <td>
+              <button type="button" class="btn btn-primary" (click)="showFireDoorsModal(audit)">View FireDoors</button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredAudits.length === 0">
+            <td colspan="8" class="text-center">No audits found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -11,5 +11,6 @@ namespace Core.Interfaces
     {
         Task<IEnumerable<Audits>> GetAllAuditsByCompanyId(string auditCompanyId);
         Task<IEnumerable<Audits>> GetAllAuditsByPropertyId(string propertyId);
+        Task<IEnumerable<Audits>> GetAllAuditsAsync();
     }
 }

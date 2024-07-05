@@ -1,0 +1,36 @@
+<div class="container">
+    <h2 class="my-4">Fire Doors List</h2>
+    <div class="mb-2">
+    <button type="button" class="btn btn-primary" >Add New Fire Door</button>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Fire Door ID</th>
+              <th>Area ID</th>
+              <th>Barcode</th>
+              <th>Door Material</th>
+              <th>Frame Material</th>
+              <th>Result</th>
+              <th >Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fireDoor of fireDoors">
+              <td>{{ fireDoor.fireDoorId }}</td>
+              <td>{{ fireDoor.areaId }}</td>
+              <td>{{ fireDoor.barcode }}</td>
+              <td>{{ fireDoor.doorMaterial }}</td>
+              <td>{{ fireDoor.frameMaterial }}</td>
+              <td>{{ fireDoor.result }}</td>
+              <td>
+                <button type="button" class="btn btn-primary" >Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

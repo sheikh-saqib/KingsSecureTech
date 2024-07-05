@@ -16,6 +16,12 @@ namespace API.Controllers
             _auditsService = auditsService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _auditsService.GetAllAuditsAsync());
+        }
+
         [HttpGet("GetByCompanyId/{auditCompanyId}")]
         public async Task<IActionResult> GetByCompanyId(string auditCompanyId)
         {

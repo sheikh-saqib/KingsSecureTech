@@ -16,7 +16,11 @@ namespace Core.Services
         {
             _repo = repo;
         }
-
+        public async Task<IEnumerable<FireDoors>> GetAllFireDoorsAsync()
+        {
+            var fireDoors = await _repo.GetAllAsync<FireDoors>();
+            return fireDoors.ToList();
+        }
         public async Task<IEnumerable<FireDoors>> GetAllFireDoorsByAreaId(string areaId)
         {
             var fireDoors = await _repo.GetByIdAsync<FireDoors>("areaId", areaId);

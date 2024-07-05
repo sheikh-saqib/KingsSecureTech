@@ -10,5 +10,6 @@ namespace Core.Interfaces
     public interface IFireDoors
     {
         Task<IEnumerable<FireDoors>> GetAllFireDoorsByAreaId(string areaId);
+        Task<IEnumerable<FireDoors>> GetAllFireDoorsAsync();
     }
 }

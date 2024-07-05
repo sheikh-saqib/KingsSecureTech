@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,12 @@ namespace API.Controllers
         public FireDoorsController(IFireDoors fireDoorService)
         {
             _fireDoorService = fireDoorService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _fireDoorService.GetAllFireDoorsAsync());
         }
 
         [HttpGet("GetByAreaId/{areaId}")]

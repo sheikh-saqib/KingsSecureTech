@@ -19,6 +19,12 @@ namespace Core.Services
             _repo = repo;
         }
 
+        public async Task<IEnumerable<Audits>> GetAllAuditsAsync()
+        {
+            var audits = await _repo.GetAllAsync<Audits>();
+            return audits.ToList();
+        }
+
         public async Task<IEnumerable<Audits>> GetAllAuditsByCompanyId(string auditCompanyId)
         {
             var audits = await _repo.GetByIdAsync<Audits>("auditcompanyId", auditCompanyId);
