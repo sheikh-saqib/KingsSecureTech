@@ -6,7 +6,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Search by Audit Company ID or Property ID"
+        placeholder="Filter by Audit Company ID or Property ID"
         [(ngModel)]="searchTerm"
         (input)="applyFilters()"
       />
@@ -25,7 +25,7 @@
             <th>Status</th>
             <th class="col-2">Assessment Type</th>
             <th class="col-2">Completed Date</th>
-            <th class="col-2">Actions</th>
+            <th class="col-4">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -38,7 +38,8 @@
             <td>{{ audit.assessmentTypeId }}</td>    
             <td>{{ audit.completedDate }}</td>
             <td>
-              <button type="button" class="btn btn-primary" (click)="showFireDoorsModal(audit)">View FireDoors</button>
+              <button type="button" class="btn btn-primary" (click)="showFireDoorsModal(audit)">FireDoors</button>
+              <button type="button" class="btn btn-primary ml-3" (click)="showRisksModal(audit)">Risks</button>
             </td>
           </tr>
           <tr *ngIf="filteredAudits.length === 0">
@@ -46,6 +47,93 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Fire Door-->
+<div class="modal fade" id="fireDoorModal" tabindex="-1" aria-labelledby="fireDoorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fireDoorModalLabel">Fire Doors for Audit ID: {{ selectedAudit?.auditId }}</h5>
+        <button type="button" class="btn-close" (click)="closeFireDoorsModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="auditFireDoors.length > 0">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Fire Door ID</th>
+                <th>Area ID</th>
+                <th>Barcode</th>
+                <th>Door Material</th>
+                <th>Frame Material</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fireDoor of auditFireDoors">
+                <td>{{ fireDoor.fireDoorId }}</td>
+                <td>{{ fireDoor.areaId }}</td>
+                <td>{{ fireDoor.barcode }}</td>
+                <td>{{ fireDoor.doorMaterial }}</td>
+                <td>{{ fireDoor.frameMaterial }}</td>
+                <td>{{ fireDoor.result }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="auditFireDoors.length === 0">
+          No fire doors found for this audit.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeFireDoorsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Risks-->
+<div class="modal fade" id="risksModal" tabindex="-1" aria-labelledby="risksModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="risksModalLabel">Risks for Audit ID: {{ selectedAudit?.auditId }}</h5>
+        <button type="button" class="btn-close" (click)="closeRisksModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="auditRisks.length > 0">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Risk ID</th>
+                <th>Area ID</th>
+                <th>Observation</th>
+                <th>Recommendation</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let risk of auditRisks">
+                <td>{{ risk.riskId }}</td>
+                <td>{{ risk.areaId }}</td>
+                <td>{{ risk.observation }}</td>
+                <td>{{ risk.recommendation }}</td>
+                <td>{{ risk.priority }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="auditRisks.length === 0">
+          No risks found for this audit.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeRisksModal()">Close</button>
+      </div>
     </div>
   </div>
 </div>

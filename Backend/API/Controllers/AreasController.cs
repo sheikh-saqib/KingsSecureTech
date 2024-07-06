@@ -16,6 +16,13 @@ namespace API.Controllers
             _areasService = areasService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var areas = await _areasService.GetAllAreasAsync();
+            return Ok(areas);
+        }
+
         [HttpGet("GetByFloorId/{floorId}")]
         public async Task<IActionResult> GetByFloorId(string floorId)
         {

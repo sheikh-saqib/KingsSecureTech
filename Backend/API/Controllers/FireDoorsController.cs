@@ -1,7 +1,10 @@
 ﻿using Core.Interfaces;
+using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -19,14 +22,111 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _fireDoorService.GetAllFireDoorsAsync());
+            try
+            {
+                var fireDoors = await _fireDoorService.GetAllFireDoorsAsync();
+                return Ok(fireDoors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
-        [HttpGet("GetByAreaId/{areaId}")]
-        public async Task<IActionResult> GetByAreaId(string areaId)
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(string id)
         {
-            var fireDoors = await _fireDoorService.GetAllFireDoorsByAreaId(areaId);
-            return Ok(fireDoors);
+            try
+            {
+                var fireDoor = await _fireDoorService.GetById(id);
+                if (fireDoor == null)
+                {
+                    return NotFound();
+                }
+                return Ok(fireDoor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
+        [HttpGet("GetByAuditId/{auditId}")]
+        public async Task<IActionResult> GetByAuditId(string auditId)
+        {
+            try
+            {
+                var fireDoors = await _fireDoorService.GetAllFireDoorsByAuditId(auditId);
+                return Ok(fireDoors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] FireDoors fireDoor)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var createdFireDoor = await _fireDoorService.CreateFireDoorsAsync(fireDoor);
+                return Ok(createdFireDoor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromBody] FireDoors fireDoor)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var fireDoorToUpdate = await _fireDoorService.GetById(fireDoor.FireDoorId);
+                if (fireDoorToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                var updatedFireDoor = await _fireDoorService.UpdateFireDoorsAsync(fireDoor);
+                return Ok(updatedFireDoor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    try
+        //    {
+        //        var fireDoorToDelete = await _fireDoorService.GetById(id);
+        //        if (fireDoorToDelete == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        await _fireDoorService.DeleteFireDoorsAsync(id);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
     }
 }

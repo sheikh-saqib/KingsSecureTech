@@ -17,6 +17,7 @@ builder.Services.AddTransient<IAudits, AuditsService>();
 builder.Services.AddTransient<IFloors, FloorsService>();
 builder.Services.AddTransient<IAreas, AreasService>();
 builder.Services.AddTransient<IFireDoors, FireDoorsService>();
+builder.Services.AddTransient<IRisks, RisksService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

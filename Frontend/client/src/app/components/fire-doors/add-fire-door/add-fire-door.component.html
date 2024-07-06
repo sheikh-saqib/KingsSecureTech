@@ -1,0 +1,104 @@
+<div class="container">
+    <h2 class="my-4">Add Fire Door</h2>
+    <form [formGroup]="fireDoorForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="fireDoorId">
+                    Fire Door ID <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="fireDoorId" formControlName="fireDoorId" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="barcode">Barcode</label>
+                <input type="text" class="form-control" id="barcode" formControlName="barcode" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="doorMaterial">Door Material</label>
+                <input type="text" class="form-control" id="doorMaterial" formControlName="doorMaterial" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="frameMaterial">Frame Material</label>
+                <input type="text" class="form-control" id="frameMaterial" formControlName="frameMaterial" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="result">Result</label>
+            <input type="text" class="form-control" id="result" formControlName="result" />
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="clientId">
+                    Client <span class="text-danger">*</span>
+                </label>
+                <select class="form-control" id="clientId" formControlName="clientId" (change)="onClientChange($event.target.value)">
+                    <option value="" disabled>Select Client</option>
+                    <option *ngFor="let client of clients" [value]="client.clientId">
+                        {{ client.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-6" *ngIf="showProperties">
+                <label for="propertyId">
+                    Property <span class="text-danger">*</span>
+                </label>
+                <select class="form-control" id="propertyId" formControlName="propertyId" (change)="onPropertyChange($event.target.value)">
+                    <option value="" disabled>Select Property</option>
+                    <option *ngFor="let property of properties" [value]="property.propertyId">
+                        {{ property.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+        <div class="form-group col-md-6" *ngIf="showAudits">
+            <label for="auditId">
+                Audit <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" id="auditId" formControlName="auditId" (change)="onAuditChange($event.target.value)">
+                <option value="" disabled>Select Audit</option>
+                <option *ngFor="let audit of audits" [value]="audit.auditId">
+                    {{ audit.auditId }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-6" *ngIf="showFloors">
+            <label for="floorId">
+                Floor <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" id="floorId" formControlName="floorId" (change)="onFloorChange($event.target.value)">
+                <option value="" disabled>Select Floor</option>
+                <option *ngFor="let floor of floors" [value]="floor.floorId">
+                    {{ floor.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6" *ngIf="showAreas">
+            <label for="areaId">
+                Area <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" id="areaId" formControlName="areaId">
+                <option value="" disabled>Select Area</option>
+                <option *ngFor="let area of areas" [value]="area.areaId">
+                    {{ area.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+        
+
+        <button type="submit" class="btn btn-primary" [disabled]="!fireDoorForm.valid">
+            Add Fire Door
+        </button>
+    </form>
+</div>

@@ -14,4 +14,22 @@ export class FireDoorsService {
   getFireDoors(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/FireDoors`);
   }
+
+  getFireDoorsByAuditId(auditId: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/FireDoors/GetByAuditId/${auditId}`
+    );
+  }
+  addFireDoor(fireDoor: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/firedoors`, fireDoor);
+  }
+  updateFireDoor(fireDoor: any): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/FireDoors/${fireDoor.fireDoorId}`,
+      fireDoor
+    );
+  }
+  getFireDoorById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/FireDoors/GetById/${id}`);
+  }
 }

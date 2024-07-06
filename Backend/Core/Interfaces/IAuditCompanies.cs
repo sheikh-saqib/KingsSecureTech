@@ -9,6 +9,6 @@ namespace Core.Interfaces
 {
     public interface IAuditCompanies
     {
-        public Task<IEnumerable<AuditCompanies>> GetAllAuditCompaniesAsync();
+        Task<IEnumerable<AuditCompanies>> GetAllAuditCompaniesAsync();
     }
 }

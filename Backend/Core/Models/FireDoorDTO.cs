@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    public class FireDoors
+    public class FireDoorDTO
     {
-        [Required]
         public string FireDoorId { get; set; }
-        [Required]
         public string AreaId { get; set; }
         public string Barcode { get; set; }
         public string DoorMaterial { get; set; }
         public string FrameMaterial { get; set; }
         public string Result { get; set; }
+        public string FloorId { get; set; }
+        public string AuditId { get; set; }
+        public string PropertyId { get; set; }
+        public string ClientId { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FireDoorsService } from 'src/app/services/fire-doors.service';
 
 @Component({
@@ -8,7 +9,13 @@ import { FireDoorsService } from 'src/app/services/fire-doors.service';
 })
 export class FireDoorsComponent implements OnInit {
   fireDoors: any[] = [];
-  constructor(private fireDoorsService: FireDoorsService) {}
+  filteredFireDoors: any[] = [];
+  searchTerm: string = '';
+
+  constructor(
+    private fireDoorsService: FireDoorsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getFireDoors();
@@ -18,10 +25,26 @@ export class FireDoorsComponent implements OnInit {
     this.fireDoorsService.getFireDoors().subscribe(
       (data) => {
         this.fireDoors = data;
+        this.filteredFireDoors = data;
       },
       (error) => {
         console.error('Error fetching fire doors:', error);
       }
     );
+  }
+
+  applyFilters(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredFireDoors = this.fireDoors.filter((door) =>
+      door.auditId.toLowerCase().includes(term)
+    );
+  }
+
+  navigateToAddFireDoor(): void {
+    this.router.navigate(['/add-fire-door']);
+  }
+
+  navigateToEditFireDoor(fireDoorId: string): void {
+    this.router.navigate(['/edit-fire-door', fireDoorId]);
   }
 }

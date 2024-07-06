@@ -1,0 +1,46 @@
+<div class="container">
+    <h2 class="my-4">Risks List</h2>
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Filter by Audit ID"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+        />
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Risk ID</th>
+              <th>Area ID</th>
+              <th>Audit ID</th>
+              <th>Observation</th>
+              <th>Recommendation</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let risk of filteredRisks">
+              <td>{{ risk.riskId }}</td>
+              <td>{{ risk.areaId }}</td>
+              <td>{{ risk.auditId }}</td>
+              <td>{{ risk.observation }}</td>
+              <td>{{ risk.recommendation }}</td>
+              <td>{{ risk.priority }}</td>
+            </tr>
+            <tr *ngIf="filteredRisks.length === 0">
+              <td colspan="6" class="text-center">No risks found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

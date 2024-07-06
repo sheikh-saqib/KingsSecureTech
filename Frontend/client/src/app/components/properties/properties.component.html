@@ -6,7 +6,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Search by Property Name or Client ID"
+        placeholder="Filter by Property Name or Client ID"
         [(ngModel)]="searchTerm"
         (input)="filterProperties()"
       />
@@ -41,12 +41,14 @@
               </button>
             </td>
           </tr>
+          <tr *ngIf="filteredProperties.length === 0">
+            <td colspan="5" class="text-center">No properties found.</td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-
 <!-- Modal -->
 <div
   class="modal fade"

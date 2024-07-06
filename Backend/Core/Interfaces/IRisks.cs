@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IAreas
+    public interface IRisks
     {
-        Task<IEnumerable<Areas>> GetAllAreasByFloorId(string floorId);
-        Task<IEnumerable<Areas>> GetAllAreasAsync();
+        Task<IEnumerable<Risks>> GetAllRisksAsync();
+        Task<IEnumerable<Risks>> GetAllRisksByAuditId(string auditId);
     }
 }

@@ -23,5 +23,10 @@ namespace Core.Services
             var floors = await _repo.GetByIdAsync<Areas>("floorId", floorId);
             return floors;
         }
+        public async Task<IEnumerable<Areas>> GetAllAreasAsync()
+        {
+            var areas = await _repo.GetAllAsync<Areas>();
+            return areas.ToList();
+        }
     }
 }

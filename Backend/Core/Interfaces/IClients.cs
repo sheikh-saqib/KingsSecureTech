@@ -9,6 +9,6 @@ namespace Core.Interfaces
 {
     public interface IClients
     {
-        public Task<IEnumerable<Clients>> GetAllClientsAsync();
+       Task<IEnumerable<Clients>> GetAllClientsAsync();
     }
 }
