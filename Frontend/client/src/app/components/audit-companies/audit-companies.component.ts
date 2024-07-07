@@ -17,7 +17,7 @@ export class AuditCompaniesComponent implements OnInit {
   loadingAuditCompanies: boolean = false;
   loadingAudits: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 8;
 
   constructor(
     private auditCompaniesService: AuditCompaniesService,

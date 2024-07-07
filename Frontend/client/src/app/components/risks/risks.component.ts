@@ -21,7 +21,7 @@ export class RisksComponent implements OnInit {
 
   // Pagination properties
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 8;
 
   constructor(
     private risksService: RisksService,

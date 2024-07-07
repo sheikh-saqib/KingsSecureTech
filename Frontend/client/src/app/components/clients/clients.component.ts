@@ -17,7 +17,7 @@ export class ClientsComponent implements OnInit {
   loadingClients: boolean = false;
   loadingProperties: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 8;
 
   constructor(
     private clientsService: ClientsService,

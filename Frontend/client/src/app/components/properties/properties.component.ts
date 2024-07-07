@@ -22,7 +22,7 @@ export class PropertiesComponent implements OnInit {
   loadingProperties: boolean = false; // Loading indicator for properties list
   loadingAudits: boolean = false; // Loading indicator for audits modal
   currentPage: number = 1;
-  itemsPerPage: number = 10; // Number of items per page
+  itemsPerPage: number = 7; // Number of items per page
 
   constructor(
     private propertiesService: PropertiesService,

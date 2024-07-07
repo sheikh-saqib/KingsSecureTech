@@ -27,7 +27,7 @@ export class AuditsComponent implements OnInit {
   loadingFireDoors: boolean = false;
   loadingRisks: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 8;
 
   constructor(
     private auditService: AuditService,

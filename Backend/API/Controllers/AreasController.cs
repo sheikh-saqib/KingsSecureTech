@@ -15,24 +15,6 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Gets a list of all areas.
-        /// </summary>
-        /// <returns>A list of areas.</returns>
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            try
-            {
-                var areas = await _areasService.GetAllAreasAsync();
-                return Ok(areas);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request.", ex.Message });
-            }
-        }
-
-        /// <summary>
         /// Gets a list of areas by the specified floor ID.
         /// </summary>
         /// <param name="floorId">The ID of the floor.</param>
