@@ -11,3 +11,16 @@ Before you begin, ensure you have the following installed:
 - Angular CLI: Install globally using npm if not already installed
   ```bash
   npm install -g @angular/cli
+
+# Getting Started
+Clone the repository to your local machine and run the frontend and backend using the following command:
+
+```bash
+git clone https://github.com/sheikh-saqib/KingsSecureTech.git
+cd KingsSecureTech
+cd frontend/client
+npm install
+ng serve
+cd ../..
+dotnet run --project backend/YourProjectName
+
