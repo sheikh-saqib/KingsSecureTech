@@ -1,9 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
-using Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {

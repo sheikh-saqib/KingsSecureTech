@@ -12,6 +12,5 @@ namespace Core.Models
         public string AreaId { get; set; }
         public string FloorId { get; set; }
         public string Name { get; set; }
-        //public List<FireDoors> FireDoors { get; set; }
     }
 }

@@ -8,7 +8,6 @@ namespace API.Controllers
     public class AuditsController : ControllerBase
     {
         private readonly IAudits _auditsService;
-
         public AuditsController(IAudits auditsService)
         {
             _auditsService = auditsService;
@@ -24,7 +23,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request.", ex.Message });
             }
         }
 
@@ -38,7 +37,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request.", ex.Message });
             }
         }
 
@@ -52,7 +51,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request.", ex.Message });
             }
         }
     }

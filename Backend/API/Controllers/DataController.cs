@@ -1,17 +1,19 @@
 ﻿using Core.Interfaces;
+using Core.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FloorsController : ControllerBase
+    public class DataController : ControllerBase
     {
-        private readonly IFloors _floorsService;
+        private readonly IData _dataService;
 
-        public FloorsController(IFloors floorsService)
+        public DataController(IData dataService)
         {
-            _floorsService = floorsService;
+            _dataService = dataService;
         }
 
         [HttpGet("GetByAuditId/{auditId}")]
@@ -19,8 +21,8 @@ namespace API.Controllers
         {
             try
             {
-                var floors = await _floorsService.GetAllFloorsByAuditId(auditId);
-                return Ok(floors);
+                var data = await _dataService.GetByAuditId(auditId);
+                return Ok(data);
             }
             catch (Exception ex)
             {
