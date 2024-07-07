@@ -8,14 +8,10 @@ namespace Core.Models
     {
         [Required]
         public string RiskId { get; set; }
-
         [Required]
         public string AreaId { get; set; }
-
         public string Observation { get; set; }
-
         public string Recommendation { get; set; }
-
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public PriorityLevel Priority { get; set; }
@@ -46,7 +42,6 @@ namespace Core.Models
         public string AuditId { get; set; }
         public string PropertyId { get; set; }
         public string ClientId { get; set; }
-
     }
 
 }
