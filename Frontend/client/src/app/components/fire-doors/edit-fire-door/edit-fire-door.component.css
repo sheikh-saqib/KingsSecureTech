@@ -1,0 +1,36 @@
+.fixed-alert {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    padding: 15px;
+    z-index: 1000;
+    border-radius: 5px;
+  }
+  
+  .fixed-alert p {
+    margin: 0;
+  }
+  
+  .fixed-alert.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+  
+  .fixed-alert.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+  
+  .fixed-alert .close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 15px;
+    cursor: pointer;
+  }
+  

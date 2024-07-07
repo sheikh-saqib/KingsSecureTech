@@ -94,11 +94,11 @@
             </select>
         </div>
     </div>
-
-        
-
         <button type="submit" class="btn btn-primary" [disabled]="!fireDoorForm.valid">
             Add Fire Door
+        </button>
+        <button type="submit" class="btn btn-secondary ml-3" (click)="onCancel()">
+            Cancel
         </button>
     </form>
 </div>

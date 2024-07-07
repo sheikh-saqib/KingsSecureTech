@@ -1,0 +1,17 @@
+/* Navbar styling */
+.navbar {
+    background-color: #000000 !important; /* Black background */
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* White text */
+    font-size: 1.2rem; /* Slightly larger text */
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #d3d3d3 !important; /* Light grey text on hover */
+}
+
+.nav-link {
+    margin-right: 1rem; /* Add some space between links */
+}

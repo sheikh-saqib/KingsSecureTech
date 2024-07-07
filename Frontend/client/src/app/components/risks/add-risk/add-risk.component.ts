@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FireDoorsService } from 'src/app/services/fire-doors.service';
+import { RisksService } from 'src/app/services/risks.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { PropertiesService } from 'src/app/services/properties.service';
 import { AuditService } from 'src/app/services/audits.service';
@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
 import { ErrorsService } from 'src/app/services/errors.service';
 
 @Component({
-  selector: 'app-add-fire-door',
-  templateUrl: './add-fire-door.component.html',
-  styleUrls: ['./add-fire-door.component.css'],
+  selector: 'app-add-risk',
+  templateUrl: './add-risk.component.html',
+  styleUrls: ['./add-risk.component.css'],
 })
-export class AddFireDoorComponent implements OnInit {
-  fireDoorForm: FormGroup;
+export class AddRiskComponent implements OnInit {
+  riskForm: FormGroup;
   clients: any[] = [];
   properties: any[] = [];
   audits: any[] = [];
@@ -26,9 +26,16 @@ export class AddFireDoorComponent implements OnInit {
   showFloors = false;
   showAreas = false;
 
+  priorityOptions = [
+    { label: 'Very High', value: 1 },
+    { label: 'High', value: 2 },
+    { label: 'Medium', value: 3 },
+    { label: 'Low', value: 4 },
+  ];
+
   constructor(
     private fb: FormBuilder,
-    private fireDoorsService: FireDoorsService,
+    private risksService: RisksService,
     private clientsService: ClientsService,
     private propertiesService: PropertiesService,
     private auditsService: AuditService,
@@ -37,17 +44,16 @@ export class AddFireDoorComponent implements OnInit {
     private router: Router,
     private errorHandlerService: ErrorsService // Inject error handler service
   ) {
-    this.fireDoorForm = this.fb.group({
+    this.riskForm = this.fb.group({
       clientId: ['', Validators.required],
       propertyId: ['', Validators.required],
       auditId: ['', Validators.required],
       floorId: ['', Validators.required],
       areaId: ['', Validators.required],
-      fireDoorId: ['', Validators.required],
-      barcode: [''],
-      doorMaterial: [''],
-      frameMaterial: [''],
-      result: [''],
+      riskId: ['', Validators.required],
+      observation: [''],
+      recommendation: [''],
+      priority: ['', Validators.required],
     });
   }
 
@@ -74,7 +80,7 @@ export class AddFireDoorComponent implements OnInit {
           this.audits = [];
           this.floors = [];
           this.areas = [];
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             propertyId: '',
             auditId: '',
             floorId: '',
@@ -90,7 +96,7 @@ export class AddFireDoorComponent implements OnInit {
       this.audits = [];
       this.floors = [];
       this.areas = [];
-      this.fireDoorForm.patchValue({
+      this.riskForm.patchValue({
         propertyId: '',
         auditId: '',
         floorId: '',
@@ -110,7 +116,7 @@ export class AddFireDoorComponent implements OnInit {
           this.showAreas = false;
           this.floors = [];
           this.areas = [];
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             auditId: '',
             floorId: '',
             areaId: '',
@@ -123,7 +129,7 @@ export class AddFireDoorComponent implements OnInit {
       this.audits = [];
       this.floors = [];
       this.areas = [];
-      this.fireDoorForm.patchValue({ auditId: '', floorId: '', areaId: '' });
+      this.riskForm.patchValue({ auditId: '', floorId: '', areaId: '' });
     }
   }
 
@@ -136,14 +142,14 @@ export class AddFireDoorComponent implements OnInit {
           this.showFloors = true;
           this.showAreas = false;
           this.areas = [];
-          this.fireDoorForm.patchValue({ floorId: '', areaId: '' });
+          this.riskForm.patchValue({ floorId: '', areaId: '' });
         });
     } else {
       this.showFloors = false;
       this.showAreas = false;
       this.floors = [];
       this.areas = [];
-      this.fireDoorForm.patchValue({ floorId: '', areaId: '' });
+      this.riskForm.patchValue({ floorId: '', areaId: '' });
     }
   }
 
@@ -152,30 +158,30 @@ export class AddFireDoorComponent implements OnInit {
       this.areasService.getAreasByFloorId(floorId).subscribe((data: any[]) => {
         this.areas = data;
         this.showAreas = true;
-        this.fireDoorForm.patchValue({ areaId: '' });
+        this.riskForm.patchValue({ areaId: '' });
       });
     } else {
       this.showAreas = false;
       this.areas = [];
-      this.fireDoorForm.patchValue({ areaId: '' });
+      this.riskForm.patchValue({ areaId: '' });
     }
   }
 
   onSubmit(): void {
-    if (this.fireDoorForm.valid) {
-      this.fireDoorsService.addFireDoor(this.fireDoorForm.value).subscribe(
+    if (this.riskForm.valid) {
+      this.risksService.addRisk(this.riskForm.value).subscribe(
         (response: any) => {
-          console.log('Fire door added successfully', response);
-          this.router.navigate(['/fire-doors']);
+          console.log('Risk added successfully', response);
+          this.router.navigate(['/risks']);
         },
         (error) => {
-          console.error('Error adding fire door:', error);
+          console.error('Error adding risk:', error);
           this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
         }
       );
     }
   }
   onCancel() {
-    this.router.navigate(['/fire-doors']);
+    this.router.navigate(['/risks']);
   }
 }

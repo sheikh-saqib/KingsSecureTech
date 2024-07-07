@@ -14,6 +14,6 @@ namespace Core.Interfaces
         Task<IEnumerable<FireDoors>> GetAllFireDoorsAsync();
         Task<FireDoors> CreateFireDoorsAsync(FireDoors fireDoor);
         Task<FireDoors> UpdateFireDoorsAsync(FireDoors fireDoor);
-        //Task<FireDoors> DeleteFireDoorsAsync(FireDoors fireDoor);
+        Task<bool> DeleteFireDoorsAsync(string fireDoorId);
     }
 }

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddTransient<IRepository, Repository>(provider =>
+builder.Services.AddScoped<IRepository, Repository>(provider =>
     new Repository(connectionString));
 
 builder.Services.AddTransient<IClients, ClientsService>();

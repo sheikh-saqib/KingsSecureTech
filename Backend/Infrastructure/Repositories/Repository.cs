@@ -126,6 +126,30 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<T>> GetRiskByIdAsync<T>(string propertyName, object propertyValue) where T : class
+        {
+            using (IDbConnection db = CreateConnection())
+            {
+                string query = @"
+                SELECT r.RiskId, r.AreaId, r.Observation, r.Recommendation, r.Priority
+                       , f.FloorId, au.AuditId, p.PropertyId, c.ClientId
+                FROM risks r
+                JOIN areas a ON r.AreaId = a.AreaId
+                JOIN floors f ON a.FloorId = f.FloorId
+                JOIN audits au ON f.AuditId = au.AuditId
+                JOIN properties p ON au.PropertyId = p.PropertyId
+                JOIN clients c ON p.ClientId = c.ClientId
+                WHERE r.RiskId = @RiskId;
+            ";
+
+                var parameters = new DynamicParameters();
+                parameters.Add(propertyName, propertyValue);
+
+                var entities = await db.QueryAsync<T>(query, parameters);
+                return entities;
+            }
+        }
+
         public async Task<int> UpdateAsync<T>(T entity) where T : class
         {
             using (IDbConnection db = CreateConnection())
@@ -141,6 +165,23 @@ namespace Infrastructure.Repositories
                 return affectedRows;
             }
         }
+
+        public async Task<bool> DeleteAsync<T>(string id) where T : class
+        {
+            using (IDbConnection db = CreateConnection())
+            {
+                var tableName = typeof(T).Name;
+                var keyProperty = typeof(T).GetProperties().First(p => p.Name.ToLower().Contains("id"));
+                var query = $"DELETE FROM {tableName} WHERE {keyProperty.Name} = @Id";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("Id", id);
+
+                var affectedRows = await db.ExecuteAsync(query, parameters);
+                return affectedRows > 0;
+            }
+        }
+
 
     }
 }

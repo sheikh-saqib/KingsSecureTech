@@ -1,6 +1,4 @@
 ﻿using Core.Interfaces;
-using Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,8 +17,15 @@ namespace API.Controllers
         [HttpGet("GetByAuditId/{auditId}")]
         public async Task<IActionResult> GetByAuditId(string auditId)
         {
-            var floors = await _floorsService.GetAllFloorsByAuditId(auditId);
-            return Ok(floors);
+            try
+            {
+                var floors = await _floorsService.GetAllFloorsByAuditId(auditId);
+                return Ok(floors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
     }
 }

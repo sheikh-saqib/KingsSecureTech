@@ -1,4 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Reset default styles and set up basic layout */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', "Helvetica Neue", sans-serif;
+}
+
+/* Table header styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem; /* Add some spacing between tables */
+}
+
+table thead th {
+    background-color: #000000 !important;  /* Black background */
+    color: #ffffff; /* White text */
+    padding: 0.75rem; /* Adjust padding as needed */
+    text-align: center; /* Center-align text in header */
+    border: 1px solid #dee2e6; /* Add border to header cells */
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dee2e6; /* Ensure border consistency */
+    padding: 0.75rem; /* Add padding to table cells */
+}
+
+/* Button close styling */
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #000000;
+    cursor: pointer; /* Ensure cursor indicates clickable */
+    padding: 0; /* Remove any default padding */
+    line-height: 1; /* Adjust line height as needed */
+}
+
+.btn-close:focus {
+    outline: none; /* Remove focus outline */
+}
+
+/* Optional: Styling for required fields */
+.form-group.required label::after {
+    content: '*';
+    color: red;
+    margin-left: 5px; /* Add some space between label text and asterisk */
+}
+.container {
+    max-width: 1600px !important; /* Set your desired max-width here */
+  }

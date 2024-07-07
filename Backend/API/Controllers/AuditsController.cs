@@ -1,6 +1,4 @@
 ﻿using Core.Interfaces;
-using Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,21 +17,43 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _auditsService.GetAllAuditsAsync());
+            try
+            {
+                var audits = await _auditsService.GetAllAuditsAsync();
+                return Ok(audits);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
 
         [HttpGet("GetByCompanyId/{auditCompanyId}")]
         public async Task<IActionResult> GetByCompanyId(string auditCompanyId)
         {
-            var audits = await _auditsService.GetAllAuditsByCompanyId(auditCompanyId);
-            return Ok(audits);
+            try
+            {
+                var audits = await _auditsService.GetAllAuditsByCompanyId(auditCompanyId);
+                return Ok(audits);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
 
         [HttpGet("GetByPropertyId/{propertyId}")]
         public async Task<IActionResult> GetByPropertyId(string propertyId)
         {
-            var audits = await _auditsService.GetAllAuditsByPropertyId(propertyId);
-            return Ok(audits);
+            try
+            {
+                var audits = await _auditsService.GetAllAuditsByPropertyId(propertyId);
+                return Ok(audits);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
     }
 }

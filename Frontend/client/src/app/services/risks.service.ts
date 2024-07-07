@@ -18,4 +18,16 @@ export class RisksService {
   getRisksByAuditId(auditId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/Risks/GetByAuditId/${auditId}`);
   }
+  addRisk(risk: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Risks`, risk);
+  }
+  updateRisk(risk: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/Risks/${risk.riskId}`, risk);
+  }
+  getRiskById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/Risks/GetById/${id}`);
+  }
+  deleteRisk(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/Risks/${id}`);
+  }
 }

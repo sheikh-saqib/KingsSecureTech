@@ -1,43 +1,71 @@
 <div class="container">
-    <h2 class="my-4">Audit Companies List</h2>
-    
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th>Audit Company ID</th>
-              <th>Name</th>
-              <th class="col-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let auditCompany of auditCompanies">
-              <td>{{ auditCompany.auditCompanyId }}</td>
-              <td>{{ auditCompany.name }}</td>
-              <td>
-                <button type="button" class="btn btn-primary" (click)="showAuditModal(auditCompany)">View Audits</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <h2 class="my-4">Audit Companies List</h2>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="loadingAuditCompanies" class="d-flex justify-content-center mb-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden"></span>
+        </div>
       </div>
+      <table class="table table-bordered table-striped" *ngIf="!loadingAuditCompanies">
+        <thead class="thead-dark">
+          <tr>
+            <th>Audit Company ID</th>
+            <th>Name</th>
+            <th class="col-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let auditCompany of getPaginatedAuditCompanies()">
+            <td>{{ auditCompany.auditCompanyId }}</td>
+            <td>{{ auditCompany.name }}</td>
+            <td class="text-center">
+              <button type="button" class="btn btn-primary mx-auto" (click)="showAuditModal(auditCompany)">
+                <span *ngIf="!loadingAudits">View Audits</span>
+                <div class="spinner-border spinner-border-sm ms-1" role="status" *ngIf="loadingAudits"></div>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
+
+  <!-- Pagination Controls -->
+  <nav *ngIf="auditCompanies.length > itemsPerPage" class="col-12">
+    <ul class="pagination justify-content-center flex-wrap">
+      <li class="page-item" [class.disabled]="!hasPreviousPage()">
+        <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="!hasPreviousPage()">Previous</button>
+      </li>
+      <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+        <button class="page-link" (click)="onPageChange(page)">{{ page }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="!hasNextPage()">
+        <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="!hasNextPage()">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="auditModal" tabindex="-1" aria-labelledby="auditModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="auditModalLabel">Audits for {{ selectedAuditCompany?.name }}</h5>
-          <button type="button" class="btn-close" (click)="closeAuditModal()" aria-label="Close"></button>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auditModalLabel">Audits for {{ selectedAuditCompany?.name }}</h5>
+        <button type="button" class="btn-close" (click)="closeAuditModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center" *ngIf="loadingAudits">
+          <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden"></span>
+          </div>
         </div>
-        <div class="modal-body">
-          <!-- Display properties here -->
+        <div *ngIf="!loadingAudits">
           <div *ngIf="auditCompanyAudits.length > 0">
-            <table class="table table-bordered">
-              <thead>
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
                 <tr>
                   <th>Audit ID</th>
                   <th>Audit Date</th>
@@ -51,13 +79,12 @@
               <tbody>
                 <tr *ngFor="let audit of auditCompanyAudits">
                   <td>{{ audit.auditId }}</td>
-                  <td>{{ audit.auditDate }}</td>
+                  <td>{{ audit.auditDate | date: 'medium'}}</td>
                   <td>{{ audit.auditCompanyId }}</td>
                   <td>{{ audit.propertyId }}</td>
                   <td>{{ audit.status }}</td>
                   <td>{{ audit.assessmentTypeId }}</td>
-                  <td>{{ audit.completedDate }}</td>
-
+                  <td>{{ audit.completedDate | date: 'medium'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -66,12 +93,10 @@
             No Audits found.
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeAuditModal()">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeAuditModal()">Close</button>
       </div>
     </div>
   </div>
-    
-  
-  
+</div>

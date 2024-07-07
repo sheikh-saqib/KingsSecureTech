@@ -14,6 +14,10 @@ import { RisksComponent } from './components/risks/risks.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddFireDoorComponent } from './components/fire-doors/add-fire-door/add-fire-door.component';
 import { EditFireDoorComponent } from './components/fire-doors/edit-fire-door/edit-fire-door.component';
+import { ErrorsComponent } from './components/errors/errors.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AddRiskComponent } from './components/risks/add-risk/add-risk.component';
+import { EditRiskComponent } from './components/risks/edit-risk/edit-risk.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,10 @@ import { EditFireDoorComponent } from './components/fire-doors/edit-fire-door/ed
     RisksComponent,
     AddFireDoorComponent,
     EditFireDoorComponent,
+    ErrorsComponent,
+    DashboardComponent,
+    AddRiskComponent,
+    EditRiskComponent,
   ],
   imports: [
     BrowserModule,

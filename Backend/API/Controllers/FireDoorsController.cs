@@ -93,13 +93,6 @@ namespace API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
-                var fireDoorToUpdate = await _fireDoorService.GetById(fireDoor.FireDoorId);
-                if (fireDoorToUpdate == null)
-                {
-                    return NotFound();
-                }
-
                 var updatedFireDoor = await _fireDoorService.UpdateFireDoorsAsync(fireDoor);
                 return Ok(updatedFireDoor);
             }
@@ -109,24 +102,24 @@ namespace API.Controllers
             }
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    try
-        //    {
-        //        var fireDoorToDelete = await _fireDoorService.GetById(id);
-        //        if (fireDoorToDelete == null)
-        //        {
-        //            return NotFound();
-        //        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var fireDoorToDelete = await _fireDoorService.GetById(id);
+                if (fireDoorToDelete == null)
+                {
+                    return NotFound();
+                }
 
-        //        await _fireDoorService.DeleteFireDoorsAsync(id);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
+                await _fireDoorService.DeleteFireDoorsAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

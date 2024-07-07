@@ -58,9 +58,9 @@ namespace Core.Services
             return existingFireDoor;
         }
 
-        //public async Task<bool> DeleteFireDoorsAsync(string fireDoorId)
-        //{
-        //    return await _repo.DeleteAsync<FireDoors>(fireDoorId);
-        //}
+        public async Task<bool> DeleteFireDoorsAsync(string fireDoorId)
+        {
+            return await _repo.DeleteAsync<FireDoors>(fireDoorId);
+        }
     }
 }

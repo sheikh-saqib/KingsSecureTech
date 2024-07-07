@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FireDoorsService } from 'src/app/services/fire-doors.service';
-import { ClientsService } from 'src/app/services/clients.service';
-import { PropertiesService } from 'src/app/services/properties.service';
-import { AuditService } from 'src/app/services/audits.service';
-import { FloorsService } from 'src/app/services/floors.service';
-import { AreasService } from 'src/app/services/areas.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AreasService } from 'src/app/services/areas.service';
+import { AuditService } from 'src/app/services/audits.service';
+import { ClientsService } from 'src/app/services/clients.service';
 import { ErrorsService } from 'src/app/services/errors.service';
+import { PropertiesService } from 'src/app/services/properties.service';
+import { RisksService } from 'src/app/services/risks.service';
+import { FloorsService } from 'src/app/services/floors.service';
 
 @Component({
-  selector: 'app-edit-fire-door',
-  templateUrl: './edit-fire-door.component.html',
-  styleUrls: ['./edit-fire-door.component.css'],
+  selector: 'app-edit-risk',
+  templateUrl: './edit-risk.component.html',
+  styleUrls: ['./edit-risk.component.css'],
 })
-export class EditFireDoorComponent implements OnInit {
-  fireDoorForm: FormGroup;
+export class EditRiskComponent implements OnInit {
+  riskForm: FormGroup;
   clients: any[] = [];
   properties: any[] = [];
   audits: any[] = [];
@@ -25,11 +25,17 @@ export class EditFireDoorComponent implements OnInit {
   showAudits = false;
   showFloors = false;
   showAreas = false;
-  fireDoorId: string;
+  riskId: string;
+  priorityOptions = [
+    { label: 'VeryHigh', value: 1 },
+    { label: 'High', value: 2 },
+    { label: 'Medium', value: 3 },
+    { label: 'Low', value: 4 },
+  ];
 
   constructor(
     private fb: FormBuilder,
-    private fireDoorsService: FireDoorsService,
+    private risksService: RisksService,
     private clientsService: ClientsService,
     private propertiesService: PropertiesService,
     private auditsService: AuditService,
@@ -39,25 +45,24 @@ export class EditFireDoorComponent implements OnInit {
     private router: Router,
     private errorHandlerService: ErrorsService // Inject error handler service
   ) {
-    this.fireDoorForm = this.fb.group({
+    this.riskForm = this.fb.group({
       clientId: ['', Validators.required],
       propertyId: ['', Validators.required],
       auditId: ['', Validators.required],
       floorId: ['', Validators.required],
       areaId: ['', Validators.required],
-      fireDoorId: ['', Validators.required],
-      barcode: [''],
-      doorMaterial: [''],
-      frameMaterial: [''],
-      result: [''],
+      riskId: ['', Validators.required],
+      observation: [''],
+      recommendation: [''],
+      priority: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.fireDoorId = this.route.snapshot.params['id']; // Assuming the route param is 'id'
+    this.riskId = this.route.snapshot.params['id']; // Assuming the route param is 'id'
 
-    if (this.fireDoorId) {
-      this.loadFireDoorData();
+    if (this.riskId) {
+      this.loadRiskData();
     } else {
       this.errorHandlerService.redirectToErrorPage();
     }
@@ -65,17 +70,24 @@ export class EditFireDoorComponent implements OnInit {
     this.loadClients(); // Load clients initially
   }
 
-  loadFireDoorData(): void {
-    this.fireDoorsService.getFireDoorById(this.fireDoorId).subscribe(
+  loadRiskData(): void {
+    this.risksService.getRiskById(this.riskId).subscribe(
       (data: any) => {
+        // Convert priority string to its corresponding number
+        const priorityMapping: { [key: string]: number } = {
+          VeryHigh: 1,
+          High: 2,
+          Medium: 3,
+          Low: 4,
+        };
+
         // Patch form values with data retrieved
-        this.fireDoorForm.patchValue({
-          fireDoorId: data[0].fireDoorId,
+        this.riskForm.patchValue({
+          riskId: data[0].riskId,
+          observation: data[0].observation,
+          recommendation: data[0].recommendation,
+          priority: priorityMapping[data[0].priority],
           areaId: data[0].areaId,
-          barcode: data[0].barcode,
-          doorMaterial: data[0].doorMaterial,
-          frameMaterial: data[0].frameMaterial,
-          result: data[0].result,
           floorId: data[0].floorId,
           auditId: data[0].auditId,
           propertyId: data[0].propertyId,
@@ -94,7 +106,7 @@ export class EditFireDoorComponent implements OnInit {
         }
       },
       (error) => {
-        console.error('Error fetching fire door:', error);
+        console.error('Error fetching risk:', error);
         this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
       }
     );
@@ -124,7 +136,7 @@ export class EditFireDoorComponent implements OnInit {
           this.audits = [];
           this.floors = [];
           this.areas = [];
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             propertyId: preselectedPropertyId || '',
             auditId: '',
             floorId: '',
@@ -164,7 +176,7 @@ export class EditFireDoorComponent implements OnInit {
           this.showAreas = false;
           this.floors = [];
           this.areas = [];
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             auditId: preselectedAuditId || '',
             floorId: '',
             areaId: '',
@@ -199,7 +211,7 @@ export class EditFireDoorComponent implements OnInit {
           this.showFloors = true;
           this.showAreas = false;
           this.areas = [];
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             floorId: preselectedFloorId || '',
             areaId: '',
           });
@@ -223,7 +235,7 @@ export class EditFireDoorComponent implements OnInit {
         (data: any[]) => {
           this.areas = data;
           this.showAreas = true;
-          this.fireDoorForm.patchValue({
+          this.riskForm.patchValue({
             areaId: preselectedAreaId || '',
           });
         },
@@ -246,18 +258,32 @@ export class EditFireDoorComponent implements OnInit {
     this.audits = [];
     this.floors = [];
     this.areas = [];
-    this.fireDoorForm.patchValue({ auditId: '', floorId: '', areaId: '' });
+    this.riskForm.patchValue({ auditId: '', floorId: '', areaId: '' });
   }
 
   onSubmit(): void {
-    if (this.fireDoorForm.valid) {
-      this.fireDoorsService.updateFireDoor(this.fireDoorForm.value).subscribe(
+    if (this.riskForm.valid) {
+      // Convert the priority number back to its corresponding string
+      const priorityMapping: { [key: number]: string } = {
+        1: 'VeryHigh',
+        2: 'High',
+        3: 'Medium',
+        4: 'Low',
+      };
+
+      const formValue = this.riskForm.value;
+      const payload = {
+        ...formValue,
+        priority: priorityMapping[formValue.priority],
+      };
+
+      this.risksService.updateRisk(payload).subscribe(
         (response: any) => {
-          console.log('Fire door updated successfully', response);
-          this.router.navigate(['/fire-doors']);
+          console.log('Risk updated successfully', response);
+          this.router.navigate(['/risks']);
         },
         (error) => {
-          console.error('Error updating fire door:', error);
+          console.error('Error updating risk:', error);
           this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
         }
       );
@@ -265,6 +291,6 @@ export class EditFireDoorComponent implements OnInit {
   }
 
   onEditCancel(): void {
-    this.router.navigate(['/fire-doors']);
+    this.router.navigate(['/risks']);
   }
 }

@@ -1,0 +1,83 @@
+<div class="container">
+    <h2 class="my-4">Edit Risk</h2>
+    <form [formGroup]="riskForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="fireDoorId">Risk ID <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="riskId" formControlName="riskId" disabled />
+            </div>
+  
+            <div class="form-group col-md-6">
+                <label for="barcode">Observation</label>
+                <input type="text" class="form-control" id="observation" formControlName="observation" />
+            </div>
+        </div>
+  
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="doorMaterial">Recommendation</label>
+                <input type="text" class="form-control" id="recommendation" formControlName="recommendation" />
+            </div>
+  
+            <div class="form-group col-md-6">
+                <label for="priority">Priority <span class="text-danger">*</span></label>
+                <select class="form-control" formControlName="priority" id="priority" required>
+                    <option value="" disabled>Select Priority</option>
+                    <option *ngFor="let option of priorityOptions" [value]="option.value">{{ option.label }}</option>
+                </select>
+            </div>
+            
+            
+        </div>
+  
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="clientId">Client <span class="text-danger">*</span></label>
+                <select class="form-control" id="clientId" formControlName="clientId" (change)="onClientChange($event.target.value)">
+                    <option value="" disabled>Select Client</option>
+                    <option *ngFor="let client of clients" [value]="client.clientId">{{ client.name }}</option>
+                </select>
+            </div>
+  
+            <div class="form-group col-md-6" *ngIf="showProperties">
+                <label for="propertyId">Property <span class="text-danger">*</span></label>
+                <select class="form-control" id="propertyId" formControlName="propertyId" (change)="onPropertyChange($event.target.value)">
+                    <option value="" disabled>Select Property</option>
+                    <option *ngFor="let property of properties" [value]="property.propertyId">{{ property.name }}</option>
+                </select>
+            </div>
+        </div>
+  
+        <div class="form-row">
+            <div class="form-group col-md-6" *ngIf="showAudits">
+                <label for="auditId">Audit <span class="text-danger">*</span></label>
+                <select class="form-control" id="auditId" formControlName="auditId" (change)="onAuditChange($event.target.value)">
+                    <option value="" disabled>Select Audit</option>
+                    <option *ngFor="let audit of audits" [value]="audit.auditId">{{ audit.auditId }}</option>
+                </select>
+            </div>
+  
+            <div class="form-group col-md-6" *ngIf="showFloors">
+                <label for="floorId">Floor <span class="text-danger">*</span></label>
+                <select class="form-control" id="floorId" formControlName="floorId" (change)="onFloorChange($event.target.value)">
+                    <option value="" disabled>Select Floor</option>
+                    <option *ngFor="let floor of floors" [value]="floor.floorId">{{ floor.name }}</option>
+                </select>
+            </div>
+        </div>
+  
+        <div class="form-row">
+            <div class="form-group col-md-6" *ngIf="showAreas">
+                <label for="areaId">Area <span class="text-danger">*</span></label>
+                <select class="form-control" id="areaId" formControlName="areaId">
+                    <option value="" disabled>Select Area</option>
+                    <option *ngFor="let area of areas" [value]="area.areaId">{{ area.name }}</option>
+                </select>
+            </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary" [disabled]="!riskForm.valid">Update Risk</button>
+        <button type="button" class="btn btn-secondary ml-3" (click)="onEditCancel()">Cancel</button>
+    </form>
+  </div>
+  

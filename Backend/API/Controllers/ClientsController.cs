@@ -17,7 +17,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _clientService.GetAllClientsAsync());
+            try
+            {
+                var clients = await _clientService.GetAllClientsAsync();
+                return Ok(clients);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
     }
 }

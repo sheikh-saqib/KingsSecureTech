@@ -1,6 +1,4 @@
 ﻿using Core.Interfaces;
-using Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,7 +17,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _auditCompaniesService.GetAllAuditCompaniesAsync());
+            try
+            {
+                var auditCompanies = await _auditCompaniesService.GetAllAuditCompaniesAsync();
+                return Ok(auditCompanies);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
         }
     }
 }
