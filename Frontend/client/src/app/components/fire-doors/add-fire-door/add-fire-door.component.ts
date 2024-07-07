@@ -35,7 +35,7 @@ export class AddFireDoorComponent implements OnInit {
     private floorsService: FloorsService,
     private areasService: AreasService,
     private router: Router,
-    private errorHandlerService: ErrorsService // Inject error handler service
+    private errorHandlerService: ErrorsService
   ) {
     this.fireDoorForm = this.fb.group({
       clientId: ['', Validators.required],
@@ -170,7 +170,7 @@ export class AddFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error adding fire door:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     }

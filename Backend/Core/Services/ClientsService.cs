@@ -14,6 +14,7 @@ namespace Core.Services
 
         public async Task<IEnumerable<Clients>> GetAllClientsAsync()
         {
+            //Get all clients
             var clients = await _repo.GetAllAsync<Clients>();
             return clients.ToList();
         }

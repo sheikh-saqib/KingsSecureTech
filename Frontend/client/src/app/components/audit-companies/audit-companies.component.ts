@@ -14,10 +14,10 @@ export class AuditCompaniesComponent implements OnInit {
   auditCompanies: any[] = [];
   auditCompanyAudits: any[] = [];
   selectedAuditCompany: any;
-  loadingAuditCompanies: boolean = false; // Loading indicator for audit companies
-  loadingAudits: boolean = false; // Loading indicator for audits
+  loadingAuditCompanies: boolean = false;
+  loadingAudits: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 10; // Number of items per page
+  itemsPerPage: number = 10;
 
   constructor(
     private auditCompaniesService: AuditCompaniesService,
@@ -30,35 +30,35 @@ export class AuditCompaniesComponent implements OnInit {
   }
 
   getAuditCompanies(): void {
-    this.loadingAuditCompanies = true; // Set loading to true before fetching audit companies
+    this.loadingAuditCompanies = true;
     this.auditCompaniesService.getAuditCompanies().subscribe(
       (data) => {
         this.auditCompanies = data;
-        this.loadingAuditCompanies = false; // Set loading to false after audit companies are fetched
+        this.loadingAuditCompanies = false;
       },
       (error) => {
         console.error('Error fetching audit companies:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page or another route
-        this.loadingAuditCompanies = false; // Ensure loading is set to false on error
+        this.errorHandlerService.redirectToErrorPage();
+        this.loadingAuditCompanies = false;
       }
     );
   }
 
   showAuditModal(auditCompany: any): void {
     this.selectedAuditCompany = auditCompany;
-    this.loadingAudits = true; // Set loading to true before fetching audits
+    this.loadingAudits = true;
     this.auditService
       .getAuditsByCompanyId(auditCompany.auditCompanyId)
       .subscribe(
         (data) => {
           this.auditCompanyAudits = data;
           $('#auditModal').modal('show');
-          this.loadingAudits = false; // Set loading to false after audits are fetched
+          this.loadingAudits = false;
         },
         (error) => {
           console.error('Error fetching audits for audit company:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page or another route
-          this.loadingAudits = false; // Ensure loading is set to false on error
+          this.errorHandlerService.redirectToErrorPage();
+          this.loadingAudits = false;
         }
       );
   }

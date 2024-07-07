@@ -16,6 +16,10 @@ namespace API.Controllers
             _propertiesService = propertiesService;
         }
 
+        /// <summary>
+        /// Gets a list of all properties.
+        /// </summary>
+        /// <returns>A list of properties.</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -30,6 +34,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of properties by the specified client ID.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>A list of properties belonging to the specified client.</returns>
         [HttpGet("{clientId}")]
         public async Task<IActionResult> GetById(string clientId)
         {

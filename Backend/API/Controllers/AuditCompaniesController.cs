@@ -14,6 +14,10 @@ namespace API.Controllers
             _auditCompaniesService = auditCompaniesService;
         }
 
+        /// <summary>
+        /// Gets a list of all audit companies.
+        /// </summary>
+        /// <returns>A list of audit companies.</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {

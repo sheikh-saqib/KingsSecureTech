@@ -1,5 +1,8 @@
 ﻿using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -14,6 +17,11 @@ namespace API.Controllers
             _floorsService = floorsService;
         }
 
+        /// <summary>
+        /// Gets a list of floors by the specified audit ID.
+        /// </summary>
+        /// <param name="auditId">The ID of the audit.</param>
+        /// <returns>A list of floors associated with the audit.</returns>
         [HttpGet("GetByAuditId/{auditId}")]
         public async Task<IActionResult> GetByAuditId(string auditId)
         {

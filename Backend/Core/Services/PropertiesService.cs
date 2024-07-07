@@ -14,12 +14,13 @@ namespace Core.Services
 
         public async Task<IEnumerable<Properties>> GetAllPropertiesAsync()
         {
+            // Get all properties 
             return await _repo.GetAllAsync<Properties>();
-            
         }
 
         public async Task<IEnumerable<Properties>> GetAllPropertiesById(string clientId)
         {
+            // Get properties by client Id
             return await _repo.GetByIdAsync<Properties>("clientId", clientId);
         }
     }

@@ -1,11 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Services
 {
@@ -20,11 +15,13 @@ namespace Core.Services
 
         public async Task<IEnumerable<Areas>> GetAllAreasByFloorId(string floorId)
         {
+            //Get all areas for a floor Id
             var floors = await _repo.GetByIdAsync<Areas>("floorId", floorId);
             return floors;
         }
         public async Task<IEnumerable<Areas>> GetAllAreasAsync()
         {
+            //Get all areas 
             var areas = await _repo.GetAllAsync<Areas>();
             return areas.ToList();
         }

@@ -1,6 +1,8 @@
 ﻿using Core.Interfaces;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -15,6 +17,10 @@ namespace API.Controllers
             _risksService = risksService;
         }
 
+        /// <summary>
+        /// Gets a list of all risks.
+        /// </summary>
+        /// <returns>A list of risks.</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -29,6 +35,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of risks by the specified audit ID.
+        /// </summary>
+        /// <param name="auditId">The ID of the audit.</param>
+        /// <returns>A list of risks associated with the audit.</returns>
         [HttpGet("GetByAuditId/{auditId}")]
         public async Task<IActionResult> GetByAuditId(string auditId)
         {
@@ -43,6 +54,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new risk.
+        /// </summary>
+        /// <param name="risk">The risk object to create.</param>
+        /// <returns>The created risk.</returns>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Risks risk)
         {
@@ -53,8 +69,8 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var createdFireDoor = await _risksService.CreateRiskAsync(risk);
-                return Ok(createdFireDoor);
+                var createdRisk = await _risksService.CreateRiskAsync(risk);
+                return Ok(createdRisk);
             }
             catch (Exception ex)
             {
@@ -62,6 +78,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a risk by the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the risk.</param>
+        /// <returns>The risk with the specified ID.</returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -80,6 +101,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing risk.
+        /// </summary>
+        /// <param name="risk">The risk object to update.</param>
+        /// <returns>The updated risk.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] Risks risk)
         {
@@ -97,6 +123,12 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Deletes a risk by the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the risk to delete.</param>
+        /// <returns>An action result.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

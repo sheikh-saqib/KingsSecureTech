@@ -17,10 +17,10 @@ namespace Core.Services
         {
             var result = new Data();
 
-            // Fetch floors for the given auditId
+            // Get floors for the given auditId
             var floors = await _repo.GetByIdAsync<Floors>("AuditId", auditId);
 
-            // Map floors to Floor objects
+            // Map floors to return object 
             result.floors = floors.Select(f =>
             {
                 var floor = new Floor
@@ -33,7 +33,7 @@ namespace Core.Services
                 return floor;
             }).ToList();
 
-            // Fetch areas related to each floor
+            // Get areas related to each floor
             foreach (var floor in result.floors)
             {
                 var areas = await _repo.GetByIdAsync<Areas>("FloorId", floor.FloorId);
@@ -52,7 +52,7 @@ namespace Core.Services
                     return area;
                 }).ToList();
 
-                // Fetch fire doors related to each area
+                // Get fire doors related to each area
                 foreach (var area in floor.areas)
                 {
                     var fireDoors = await _repo.GetByIdAsync<FireDoors>("AreaId", area.AreaId);
@@ -68,7 +68,7 @@ namespace Core.Services
                         Result = fd.Result
                     }).ToList();
 
-                    // Fetch risks related to each area
+                    // Get risks related to each area
                     var risks = await _repo.GetByIdAsync<Risks>("AreaId", area.AreaId);
 
                     // Map risks to Risks objects and add to respective area
@@ -81,7 +81,6 @@ namespace Core.Services
                     }).ToList();
                 }
             }
-
             return result;
         }
     }

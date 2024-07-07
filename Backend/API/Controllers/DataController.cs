@@ -1,6 +1,4 @@
 ﻿using Core.Interfaces;
-using Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,6 +14,11 @@ namespace API.Controllers
             _dataService = dataService;
         }
 
+        /// <summary>
+        /// Gets data by the specified audit ID.
+        /// </summary>
+        /// <param name="auditId">The ID of the audit.</param>
+        /// <returns>The data for the specified audit ID.</returns>
         [HttpGet("GetByAuditId/{auditId}")]
         public async Task<IActionResult> GetByAuditId(string auditId)
         {

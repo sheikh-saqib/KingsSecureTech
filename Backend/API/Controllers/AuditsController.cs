@@ -8,11 +8,16 @@ namespace API.Controllers
     public class AuditsController : ControllerBase
     {
         private readonly IAudits _auditsService;
+
         public AuditsController(IAudits auditsService)
         {
             _auditsService = auditsService;
         }
 
+        /// <summary>
+        /// Gets a list of all audits.
+        /// </summary>
+        /// <returns>A list of audits.</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -27,6 +32,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of audits by the specified company ID.
+        /// </summary>
+        /// <param name="auditCompanyId">The ID of the audit company.</param>
+        /// <returns>A list of audits for the specified company.</returns>
         [HttpGet("GetByCompanyId/{auditCompanyId}")]
         public async Task<IActionResult> GetByCompanyId(string auditCompanyId)
         {
@@ -41,6 +51,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of audits by the specified property ID.
+        /// </summary>
+        /// <param name="propertyId">The ID of the property.</param>
+        /// <returns>A list of audits for the specified property.</returns>
         [HttpGet("GetByPropertyId/{propertyId}")]
         public async Task<IActionResult> GetByPropertyId(string propertyId)
         {

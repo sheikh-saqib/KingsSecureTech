@@ -30,10 +30,10 @@
 /* Fixed position for alerts */
 .fixed-alerts {
   position: fixed;
-  bottom: 20px; /* Adjust as needed */
+  bottom: 20px; 
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000; /* Ensure alerts appear above other content */
+  z-index: 1000; 
 }
 
 

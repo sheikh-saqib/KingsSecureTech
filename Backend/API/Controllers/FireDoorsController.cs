@@ -1,7 +1,5 @@
 ﻿using Core.Interfaces;
 using Core.Models;
-using Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -19,6 +17,10 @@ namespace API.Controllers
             _fireDoorService = fireDoorService;
         }
 
+        /// <summary>
+        /// Gets a list of all fire doors.
+        /// </summary>
+        /// <returns>A list of fire doors.</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -33,6 +35,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a fire door by the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the fire door.</param>
+        /// <returns>The fire door with the specified ID.</returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -51,6 +58,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a list of fire doors by the specified audit ID.
+        /// </summary>
+        /// <param name="auditId">The ID of the audit.</param>
+        /// <returns>A list of fire doors for the specified audit.</returns>
         [HttpGet("GetByAuditId/{auditId}")]
         public async Task<IActionResult> GetByAuditId(string auditId)
         {
@@ -65,6 +77,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new fire door.
+        /// </summary>
+        /// <param name="fireDoor">The fire door to create.</param>
+        /// <returns>The created fire door.</returns>
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] FireDoors fireDoor)
         {
@@ -84,6 +101,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing fire door.
+        /// </summary>
+        /// <param name="fireDoor">The fire door to update.</param>
+        /// <returns>The updated fire door.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] FireDoors fireDoor)
         {
@@ -102,6 +124,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a fire door by the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the fire door to delete.</param>
+        /// <returns>An action result.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

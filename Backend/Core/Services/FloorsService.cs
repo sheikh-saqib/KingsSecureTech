@@ -1,11 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Services
 {
@@ -20,6 +15,7 @@ namespace Core.Services
 
         public async Task<IEnumerable<Floors>> GetAllFloorsByAuditId(string auditId)
         {
+            // Get all the floors by audit Id
             var floors = await _repo.GetByIdAsync<Floors>("auditId", auditId);
             return floors;
         }

@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
                 var tableName = typeof(T).Name;
                 var query = $"SELECT * FROM {tableName} WHERE {propertyName} = @{propertyName}";
 
-                // Create DynamicParameters object
+                // Create DynamicParameters object determined at runtime
                 var parameters = new DynamicParameters();
                 parameters.Add(propertyName, propertyValue);
 
@@ -58,7 +58,36 @@ namespace Infrastructure.Repositories
                 return affectedRows;
             }
         }
+        public async Task<bool> DeleteAsync<T>(string id) where T : class
+        {
+            using (IDbConnection db = CreateConnection())
+            {
+                var tableName = typeof(T).Name;
+                var keyProperty = typeof(T).GetProperties().First(p => p.Name.ToLower().Contains("id"));
+                var query = $"DELETE FROM {tableName} WHERE {keyProperty.Name} = @Id";
 
+                var parameters = new DynamicParameters();
+                parameters.Add("Id", id);
+
+                var affectedRows = await db.ExecuteAsync(query, parameters);
+                return affectedRows > 0;
+            }
+        }
+        public async Task<int> UpdateAsync<T>(T entity) where T : class
+        {
+            using (IDbConnection db = CreateConnection())
+            {
+                var tableName = typeof(T).Name;
+                var properties = GetNonNullProperties(entity);
+
+                var setClause = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
+                var keyProperty = properties.First(p => p.Name.ToLower().Contains("id"));
+                var query = $"UPDATE {tableName} SET {setClause} WHERE {keyProperty.Name} = @{keyProperty.Name}";
+
+                var affectedRows = await db.ExecuteAsync(query, entity);
+                return affectedRows;
+            }
+        }
         private IEnumerable<PropertyInfo> GetNonNullProperties<T>(T entity) where T : class
         {
             return entity.GetType().GetProperties()
@@ -79,7 +108,6 @@ namespace Infrastructure.Repositories
         ";
 
                 var parameters = new { AuditId = auditId };
-
                 return await db.QueryAsync<T>(query, parameters);
             }
         }
@@ -97,7 +125,6 @@ namespace Infrastructure.Repositories
                 ";
 
                 var parameters = new { AuditId = auditId };
-
                 return await db.QueryAsync<T>(query, parameters);
             }
         }
@@ -149,39 +176,5 @@ namespace Infrastructure.Repositories
                 return entities;
             }
         }
-
-        public async Task<int> UpdateAsync<T>(T entity) where T : class
-        {
-            using (IDbConnection db = CreateConnection())
-            {
-                var tableName = typeof(T).Name;
-                var properties = GetNonNullProperties(entity);
-
-                var setClause = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
-                var keyProperty = properties.First(p => p.Name.ToLower().Contains("id"));
-                var query = $"UPDATE {tableName} SET {setClause} WHERE {keyProperty.Name} = @{keyProperty.Name}";
-
-                var affectedRows = await db.ExecuteAsync(query, entity);
-                return affectedRows;
-            }
-        }
-
-        public async Task<bool> DeleteAsync<T>(string id) where T : class
-        {
-            using (IDbConnection db = CreateConnection())
-            {
-                var tableName = typeof(T).Name;
-                var keyProperty = typeof(T).GetProperties().First(p => p.Name.ToLower().Contains("id"));
-                var query = $"DELETE FROM {tableName} WHERE {keyProperty.Name} = @Id";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("Id", id);
-
-                var affectedRows = await db.ExecuteAsync(query, parameters);
-                return affectedRows > 0;
-            }
-        }
-
-
     }
 }
