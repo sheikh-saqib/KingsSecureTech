@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FireDoorsService } from 'src/app/services/fire-doors.service';
 import { ErrorsService } from 'src/app/services/errors.service';
 import { AuditService } from 'src/app/services/audits.service';
+import { DeleteModalComponent } from '../shared/delete-modal/delete-modal.component';
 
 declare var $: any;
 
@@ -14,43 +15,47 @@ declare var $: any;
 export class FireDoorsComponent implements OnInit {
   fireDoors: any[] = [];
   filteredFireDoors: any[] = [];
-  audits: any[] = []; // Array to hold audits for dropdown
-  selectedAudit: string = ''; // Track selected audit
+  audits: any[] = [];
+  selectedAudit: string = '';
   loading: boolean = false;
   fireDoorToDelete: any = null;
   showSuccessAlert: boolean = false;
   showErrorAlert: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 10; // Number of items per page
+  itemsPerPage: number = 10;
+
+  @ViewChild(DeleteModalComponent) deleteModal!: DeleteModalComponent;
 
   constructor(
     private fireDoorsService: FireDoorsService,
-    private auditsService: AuditService, // Inject AuditsService
+    private auditsService: AuditService,
     private router: Router,
     private errorHandlerService: ErrorsService
   ) {}
 
   ngOnInit(): void {
     this.getFireDoors();
-    this.getAudits(); // Fetch audits on initialization
+    this.getAudits();
   }
 
+  //get all the firedoors
   getFireDoors(): void {
     this.loading = true;
     this.fireDoorsService.getFireDoors().subscribe(
       (data) => {
         this.fireDoors = data;
-        this.applyFilters(); // Update filteredFireDoors on initial load
+        this.applyFilters();
         this.loading = false;
       },
       (error) => {
         console.error('Error fetching fire doors:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+        this.errorHandlerService.redirectToErrorPage();
         this.loading = false;
       }
     );
   }
 
+  //get the audits filter dropdown
   getAudits(): void {
     this.auditsService.getAudits().subscribe(
       (data) => {
@@ -58,50 +63,50 @@ export class FireDoorsComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching audits:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+        this.errorHandlerService.redirectToErrorPage();
       }
     );
   }
 
+  //on apply filter
   applyFilters(): void {
     if (!this.selectedAudit) {
       this.filteredFireDoors = [...this.fireDoors];
       return;
     }
 
-    this.loading = true; // Set loading to true while fetching filtered fire doors
+    this.loading = true;
     this.fireDoorsService.getFireDoorsByAuditId(this.selectedAudit).subscribe(
       (data) => {
         this.filteredFireDoors = data;
-        this.currentPage = 1; // Reset to first page when applying filters
+        this.currentPage = 1;
         this.loading = false;
       },
       (error) => {
         console.error('Error fetching fire doors by audit ID:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+        this.errorHandlerService.redirectToErrorPage();
         this.loading = false;
       }
     );
   }
 
+  //on add fire doors click
   navigateToAddFireDoor(): void {
     this.router.navigate(['/add-fire-door']);
   }
 
+  //on edit fire doors click
   navigateToEditFireDoor(fireDoorId: string): void {
     this.router.navigate(['/edit-fire-door', fireDoorId]);
   }
 
+  //on delete firedoors click
   confirmDelete(fireDoor: any): void {
     this.fireDoorToDelete = fireDoor;
-    $('#confirmDialog').modal('show');
+    this.deleteModal.openModal();
   }
 
-  closeConfirmDialog(): void {
-    this.fireDoorToDelete = null;
-    $('#confirmDialog').modal('hide');
-  }
-
+  //on confirm delete
   onDelete(): void {
     if (this.fireDoorToDelete) {
       this.fireDoorsService
@@ -114,25 +119,24 @@ export class FireDoorsComponent implements OnInit {
             this.filteredFireDoors = this.filteredFireDoors.filter(
               (door) => door !== this.fireDoorToDelete
             );
-            this.closeConfirmDialog();
-            this.showSuccessAlert = true; // Show success alert
+            this.showSuccessAlert = true;
             setTimeout(() => {
               this.showSuccessAlert = false;
-            }, 5000); // Hide alert after 5 seconds
+            }, 5000);
           },
           (error) => {
             console.error('Error deleting fire door:', error);
-            this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
-            this.closeConfirmDialog();
-            this.showErrorAlert = true; // Show error alert
+            this.errorHandlerService.redirectToErrorPage();
+            this.showErrorAlert = true;
             setTimeout(() => {
               this.showErrorAlert = false;
-            }, 5000); // Hide alert after 5 seconds
+            }, 5000);
           }
         );
     }
   }
 
+  // close alert message
   closeAlert(type: 'success' | 'error'): void {
     if (type === 'success') {
       this.showSuccessAlert = false;
@@ -141,9 +145,9 @@ export class FireDoorsComponent implements OnInit {
     }
   }
 
+  //pagination controls
   onPageChange(page: number): void {
     this.currentPage = page;
-    // Optionally, scroll to top of the table when changing page
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -153,22 +157,5 @@ export class FireDoorsComponent implements OnInit {
       startIndex,
       startIndex + this.itemsPerPage
     );
-  }
-
-  getPageNumbers(): number[] {
-    return Array(Math.ceil(this.filteredFireDoors.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage <
-      Math.ceil(this.filteredFireDoors.length / this.itemsPerPage)
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
   }
 }

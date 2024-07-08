@@ -55,12 +55,14 @@ export class AddFireDoorComponent implements OnInit {
     this.loadClients();
   }
 
+  //load the clients dropdown
   loadClients(): void {
     this.clientsService.getClients().subscribe((data: any[]) => {
       this.clients = data;
     });
   }
 
+  //load the properties dropdown based on the selected client
   onClientChange(clientId: string): void {
     if (clientId) {
       this.propertiesService
@@ -99,6 +101,7 @@ export class AddFireDoorComponent implements OnInit {
     }
   }
 
+  // load the audits dropdown on property change
   onPropertyChange(propertyId: string): void {
     if (propertyId) {
       this.auditsService
@@ -127,6 +130,7 @@ export class AddFireDoorComponent implements OnInit {
     }
   }
 
+  // load the floors dropdown based on the selected audit
   onAuditChange(auditId: string): void {
     if (auditId) {
       this.floorsService
@@ -147,6 +151,7 @@ export class AddFireDoorComponent implements OnInit {
     }
   }
 
+  // load the areas dropdown based on the selected floor
   onFloorChange(floorId: string): void {
     if (floorId) {
       this.areasService.getAreasByFloorId(floorId).subscribe((data: any[]) => {
@@ -161,6 +166,7 @@ export class AddFireDoorComponent implements OnInit {
     }
   }
 
+  // handle form submission to add a new fire door
   onSubmit(): void {
     if (this.fireDoorForm.valid) {
       this.fireDoorsService.addFireDoor(this.fireDoorForm.value).subscribe(
@@ -175,6 +181,7 @@ export class AddFireDoorComponent implements OnInit {
       );
     }
   }
+  // navigate to the fire doors page on cancel
   onCancel() {
     this.router.navigate(['/fire-doors']);
   }

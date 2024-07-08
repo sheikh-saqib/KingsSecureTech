@@ -37,7 +37,7 @@ export class EditFireDoorComponent implements OnInit {
     private areasService: AreasService,
     private route: ActivatedRoute,
     private router: Router,
-    private errorHandlerService: ErrorsService // Inject error handler service
+    private errorHandlerService: ErrorsService
   ) {
     this.fireDoorForm = this.fb.group({
       clientId: ['', Validators.required],
@@ -54,7 +54,7 @@ export class EditFireDoorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fireDoorId = this.route.snapshot.params['id']; // Assuming the route param is 'id'
+    this.fireDoorId = this.route.snapshot.params['id'];
 
     if (this.fireDoorId) {
       this.loadFireDoorData();
@@ -62,9 +62,10 @@ export class EditFireDoorComponent implements OnInit {
       this.errorHandlerService.redirectToErrorPage();
     }
 
-    this.loadClients(); // Load clients initially
+    this.loadClients();
   }
 
+  // Load the selected fireDoor data
   loadFireDoorData(): void {
     this.fireDoorsService.getFireDoorById(this.fireDoorId).subscribe(
       (data: any) => {
@@ -95,17 +96,19 @@ export class EditFireDoorComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching fire door:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+        this.errorHandlerService.redirectToErrorPage();
       }
     );
   }
 
+  // load the clients dropdown list
   loadClients(): void {
     this.clientsService.getClients().subscribe((data: any[]) => {
       this.clients = data;
     });
   }
 
+  // load the properties dropdown list based on the selected client
   onClientChange(
     clientId: string,
     preselectedPropertyId?: string,
@@ -141,7 +144,7 @@ export class EditFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching properties:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -149,6 +152,7 @@ export class EditFireDoorComponent implements OnInit {
     }
   }
 
+  // load the audits dropdown list based on the selected property
   onPropertyChange(
     propertyId: string,
     preselectedAuditId?: string,
@@ -179,7 +183,7 @@ export class EditFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching audits:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -187,6 +191,7 @@ export class EditFireDoorComponent implements OnInit {
     }
   }
 
+  // load the floors dropdown list based on the selected audit
   onAuditChange(
     auditId: string,
     preselectedFloorId?: string,
@@ -209,7 +214,7 @@ export class EditFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching floors:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -217,6 +222,7 @@ export class EditFireDoorComponent implements OnInit {
     }
   }
 
+  // load the areas dropdown list based on the selected floor
   onFloorChange(floorId: string, preselectedAreaId?: string): void {
     if (floorId) {
       this.areasService.getAreasByFloorId(floorId).subscribe(
@@ -229,7 +235,7 @@ export class EditFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching areas:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -237,6 +243,7 @@ export class EditFireDoorComponent implements OnInit {
     }
   }
 
+  // Reset the form state and dropdowns to initial values
   resetFormState(): void {
     this.showProperties = false;
     this.showAudits = false;
@@ -249,6 +256,7 @@ export class EditFireDoorComponent implements OnInit {
     this.fireDoorForm.patchValue({ auditId: '', floorId: '', areaId: '' });
   }
 
+  // Submit the form to update the fire door data
   onSubmit(): void {
     if (this.fireDoorForm.valid) {
       this.fireDoorsService.updateFireDoor(this.fireDoorForm.value).subscribe(
@@ -258,12 +266,13 @@ export class EditFireDoorComponent implements OnInit {
         },
         (error) => {
           console.error('Error updating fire door:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     }
   }
 
+  // Redirect to the fire doors list page
   onEditCancel(): void {
     this.router.navigate(['/fire-doors']);
   }

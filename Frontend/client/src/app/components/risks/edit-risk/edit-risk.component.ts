@@ -43,7 +43,7 @@ export class EditRiskComponent implements OnInit {
     private areasService: AreasService,
     private route: ActivatedRoute,
     private router: Router,
-    private errorHandlerService: ErrorsService // Inject error handler service
+    private errorHandlerService: ErrorsService
   ) {
     this.riskForm = this.fb.group({
       clientId: ['', Validators.required],
@@ -52,14 +52,14 @@ export class EditRiskComponent implements OnInit {
       floorId: ['', Validators.required],
       areaId: ['', Validators.required],
       riskId: ['', Validators.required],
-      observation: [''],
-      recommendation: [''],
+      observation: ['', Validators.required],
+      recommendation: ['', Validators.required],
       priority: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.riskId = this.route.snapshot.params['id']; // Assuming the route param is 'id'
+    this.riskId = this.route.snapshot.params['id'];
 
     if (this.riskId) {
       this.loadRiskData();
@@ -67,13 +67,13 @@ export class EditRiskComponent implements OnInit {
       this.errorHandlerService.redirectToErrorPage();
     }
 
-    this.loadClients(); // Load clients initially
+    this.loadClients();
   }
 
+  // load the fields for the selected risk
   loadRiskData(): void {
     this.risksService.getRiskById(this.riskId).subscribe(
       (data: any) => {
-        // Convert priority string to its corresponding number
         const priorityMapping: { [key: string]: number } = {
           VeryHigh: 1,
           High: 2,
@@ -107,17 +107,19 @@ export class EditRiskComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching risk:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+        this.errorHandlerService.redirectToErrorPage();
       }
     );
   }
 
+  //load clients data
   loadClients(): void {
     this.clientsService.getClients().subscribe((data: any[]) => {
       this.clients = data;
     });
   }
 
+  //on change of client dropdown
   onClientChange(
     clientId: string,
     preselectedPropertyId?: string,
@@ -153,7 +155,7 @@ export class EditRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching properties:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -161,6 +163,7 @@ export class EditRiskComponent implements OnInit {
     }
   }
 
+  //on change of property dropdown
   onPropertyChange(
     propertyId: string,
     preselectedAuditId?: string,
@@ -191,7 +194,7 @@ export class EditRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching audits:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -199,6 +202,7 @@ export class EditRiskComponent implements OnInit {
     }
   }
 
+  //on change of audit dropdown
   onAuditChange(
     auditId: string,
     preselectedFloorId?: string,
@@ -221,7 +225,7 @@ export class EditRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching floors:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -229,6 +233,7 @@ export class EditRiskComponent implements OnInit {
     }
   }
 
+  //on change of floor dropdown
   onFloorChange(floorId: string, preselectedAreaId?: string): void {
     if (floorId) {
       this.areasService.getAreasByFloorId(floorId).subscribe(
@@ -241,7 +246,7 @@ export class EditRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching areas:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     } else {
@@ -249,6 +254,7 @@ export class EditRiskComponent implements OnInit {
     }
   }
 
+  //to reset all the dropdowns
   resetFormState(): void {
     this.showProperties = false;
     this.showAudits = false;
@@ -261,6 +267,7 @@ export class EditRiskComponent implements OnInit {
     this.riskForm.patchValue({ auditId: '', floorId: '', areaId: '' });
   }
 
+  // on submit click
   onSubmit(): void {
     if (this.riskForm.valid) {
       // Convert the priority number back to its corresponding string
@@ -284,12 +291,13 @@ export class EditRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error updating risk:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     }
   }
 
+  //on edit cancel click
   onEditCancel(): void {
     this.router.navigate(['/risks']);
   }

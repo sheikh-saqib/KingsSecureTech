@@ -31,18 +31,13 @@
       </div>
 
       <!-- Pagination Controls -->
-      <nav *ngIf="clients.length > itemsPerPage" class="col-12">
-        <ul class="pagination justify-content-center flex-wrap">
-          <li class="page-item" [class.disabled]="!hasPreviousPage()">
-            <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="!hasPreviousPage()">Previous</button>
-          </li>
-          <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
-            <button class="page-link" (click)="onPageChange(page)">{{ page }}</button>
-          </li>
-          <li class="page-item" [class.disabled]="!hasNextPage()">
-            <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="!hasNextPage()">Next</button>
-          </li>
-        </ul>
+      <nav *ngIf="clients.length > itemsPerPage">
+        <app-pagination 
+          [totalItems]="clients.length"
+          [itemsPerPage]="itemsPerPage"
+          [currentPage]="currentPage"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
       </nav>
     </div>
   </div>

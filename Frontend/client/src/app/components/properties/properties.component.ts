@@ -19,10 +19,10 @@ export class PropertiesComponent implements OnInit {
   selectedClient: string = '';
   selectedProperty: any;
   propertyAudits: any[] = [];
-  loadingProperties: boolean = false; // Loading indicator for properties list
-  loadingAudits: boolean = false; // Loading indicator for audits modal
+  loadingProperties: boolean = false;
+  loadingAudits: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 7; // Number of items per page
+  itemsPerPage: number = 8;
 
   constructor(
     private propertiesService: PropertiesService,
@@ -33,25 +33,27 @@ export class PropertiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProperties();
-    this.getClients(); // Fetch clients on initialization
+    this.getClients();
   }
 
+  //Get all properties
   getProperties(): void {
-    this.loadingProperties = true; // Set loading to true before fetching properties
+    this.loadingProperties = true;
     this.propertiesService.getProperties().subscribe(
       (data) => {
         this.allProperties = data;
         this.filteredProperties = data;
-        this.loadingProperties = false; // Set loading to false after properties are fetched
+        this.loadingProperties = false;
       },
       (error) => {
         console.error('Error fetching properties:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page or another route
-        this.loadingProperties = false; // Ensure loading is set to false on error
+        this.errorHandlerService.redirectToErrorPage();
+        this.loadingProperties = false;
       }
     );
   }
 
+  //get all clients to populate the clients filter
   getClients(): void {
     this.clientsService.getClients().subscribe(
       (data) => {
@@ -59,11 +61,12 @@ export class PropertiesComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching clients:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page or another route
+        this.errorHandlerService.redirectToErrorPage();
       }
     );
   }
 
+  //on filter apply
   filterPropertiesByClient(): void {
     if (this.selectedClient) {
       this.filteredProperties = this.allProperties.filter(
@@ -72,34 +75,38 @@ export class PropertiesComponent implements OnInit {
     } else {
       this.filteredProperties = this.allProperties;
     }
-    this.currentPage = 1; // Reset to first page when filtering
+    this.currentPage = 1;
   }
 
+  //get all the audits for a property on button click
   showAuditModal(property: any): void {
     this.selectedProperty = property;
-    this.loadingAudits = true; // Set loading to true before fetching audits
+    this.loadingAudits = true;
     this.auditService.getAuditsByPropertyId(property.propertyId).subscribe(
       (data) => {
         this.propertyAudits = data;
         $('#auditModal').modal('show');
-        this.loadingAudits = false; // Set loading to false after audits are fetched
+        this.loadingAudits = false;
       },
       (error) => {
         console.error('Error fetching property audits:', error);
-        this.errorHandlerService.redirectToErrorPage(); // Redirect to error page or another route
-        this.loadingAudits = false; // Ensure loading is set to false on error
+        this.errorHandlerService.redirectToErrorPage();
+        this.loadingAudits = false;
       }
     );
   }
 
+  //close audit modal
   closeAuditModal(): void {
     $('#auditModal').modal('hide');
     this.propertyAudits = [];
     this.selectedProperty = null;
   }
 
+  //pagination controls
   onPageChange(page: number): void {
     this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   getPaginatedProperties(): any[] {
@@ -108,22 +115,5 @@ export class PropertiesComponent implements OnInit {
       startIndex,
       startIndex + this.itemsPerPage
     );
-  }
-
-  getPageNumbers(): number[] {
-    return Array(Math.ceil(this.filteredProperties.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage <
-      Math.ceil(this.filteredProperties.length / this.itemsPerPage)
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
   }
 }

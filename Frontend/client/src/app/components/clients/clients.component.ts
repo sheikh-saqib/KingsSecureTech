@@ -29,6 +29,7 @@ export class ClientsComponent implements OnInit {
     this.getClients();
   }
 
+  //get list of all clients
   getClients(): void {
     this.loadingClients = true;
     this.clientsService.getClients().subscribe(
@@ -44,6 +45,7 @@ export class ClientsComponent implements OnInit {
     );
   }
 
+  //list all the propeties for a client on button click
   showPropertiesModal(client: any): void {
     this.selectedClient = client;
     this.loadingProperties = true;
@@ -62,34 +64,21 @@ export class ClientsComponent implements OnInit {
     );
   }
 
+  //close the properties modal
   closePropertiesModal(): void {
     $('#propertiesModal').modal('hide');
     this.clientProperties = [];
     this.selectedClient = null;
   }
 
+  //pagination controls
   onPageChange(page: number): void {
     this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   getPaginatedClients(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.clients.slice(startIndex, startIndex + this.itemsPerPage);
-  }
-
-  getPageNumbers(): number[] {
-    return Array(Math.ceil(this.clients.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage < Math.ceil(this.clients.length / this.itemsPerPage)
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
   }
 }

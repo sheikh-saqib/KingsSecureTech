@@ -75,7 +75,9 @@
               </select>
           </div>
       </div>
-
+      <div class="text-danger mt-2 mb-2" *ngIf="!fireDoorForm.valid && fireDoorForm.touched">
+        Please fill out all mandatory fields before submitting.
+      </div>
       <button type="submit" class="btn btn-primary" [disabled]="!fireDoorForm.valid">Update Fire Door</button>
       <button type="button" class="btn btn-secondary ml-3" (click)="onEditCancel()">Cancel</button>
   </form>

@@ -26,6 +26,7 @@ export class AddRiskComponent implements OnInit {
   showFloors = false;
   showAreas = false;
 
+  // priority dropdown enum
   priorityOptions = [
     { label: 'Very High', value: 1 },
     { label: 'High', value: 2 },
@@ -42,8 +43,9 @@ export class AddRiskComponent implements OnInit {
     private floorsService: FloorsService,
     private areasService: AreasService,
     private router: Router,
-    private errorHandlerService: ErrorsService // Inject error handler service
+    private errorHandlerService: ErrorsService
   ) {
+    // Initialize form group with required fields
     this.riskForm = this.fb.group({
       clientId: ['', Validators.required],
       propertyId: ['', Validators.required],
@@ -51,8 +53,8 @@ export class AddRiskComponent implements OnInit {
       floorId: ['', Validators.required],
       areaId: ['', Validators.required],
       riskId: ['', Validators.required],
-      observation: [''],
-      recommendation: [''],
+      observation: ['', Validators.required],
+      recommendation: ['', Validators.required],
       priority: ['', Validators.required],
     });
   }
@@ -61,12 +63,14 @@ export class AddRiskComponent implements OnInit {
     this.loadClients();
   }
 
+  //load clients dropdown
   loadClients(): void {
     this.clientsService.getClients().subscribe((data: any[]) => {
       this.clients = data;
     });
   }
 
+  //populate properties filter dropdown on client change
   onClientChange(clientId: string): void {
     if (clientId) {
       this.propertiesService
@@ -105,6 +109,7 @@ export class AddRiskComponent implements OnInit {
     }
   }
 
+  //populate audits filter dropdown on properties change
   onPropertyChange(propertyId: string): void {
     if (propertyId) {
       this.auditsService
@@ -133,6 +138,7 @@ export class AddRiskComponent implements OnInit {
     }
   }
 
+  //populate Floors filter dropdown on audit change
   onAuditChange(auditId: string): void {
     if (auditId) {
       this.floorsService
@@ -153,6 +159,7 @@ export class AddRiskComponent implements OnInit {
     }
   }
 
+  //populate Areas filter dropdown on floor change
   onFloorChange(floorId: string): void {
     if (floorId) {
       this.areasService.getAreasByFloorId(floorId).subscribe((data: any[]) => {
@@ -167,6 +174,7 @@ export class AddRiskComponent implements OnInit {
     }
   }
 
+  //submit form to add new risk to the database
   onSubmit(): void {
     if (this.riskForm.valid) {
       this.risksService.addRisk(this.riskForm.value).subscribe(
@@ -176,11 +184,12 @@ export class AddRiskComponent implements OnInit {
         },
         (error) => {
           console.error('Error adding risk:', error);
-          this.errorHandlerService.redirectToErrorPage(); // Redirect to error page on error
+          this.errorHandlerService.redirectToErrorPage();
         }
       );
     }
   }
+  //cancel button to navigate back to risks page
   onCancel() {
     this.router.navigate(['/risks']);
   }

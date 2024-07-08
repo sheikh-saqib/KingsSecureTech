@@ -18,6 +18,8 @@ import { ErrorsComponent } from './components/errors/errors.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddRiskComponent } from './components/risks/add-risk/add-risk.component';
 import { EditRiskComponent } from './components/risks/edit-risk/edit-risk.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { DeleteModalComponent } from './components/shared/delete-modal/delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { EditRiskComponent } from './components/risks/edit-risk/edit-risk.compon
     DashboardComponent,
     AddRiskComponent,
     EditRiskComponent,
+    PaginationComponent,
+    DeleteModalComponent,
   ],
   imports: [
     BrowserModule,

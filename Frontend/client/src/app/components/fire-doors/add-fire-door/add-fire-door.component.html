@@ -94,6 +94,11 @@
             </select>
         </div>
     </div>
+
+    <!-- Message for mandatory fields -->
+    <div class="text-danger mt-2 mb-2" *ngIf="!fireDoorForm.valid && fireDoorForm.touched">
+        Please fill out all mandatory fields before submitting.
+      </div>
         <button type="submit" class="btn btn-primary" [disabled]="!fireDoorForm.valid">
             Add Fire Door
         </button>

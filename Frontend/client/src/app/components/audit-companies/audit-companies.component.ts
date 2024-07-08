@@ -29,6 +29,7 @@ export class AuditCompaniesComponent implements OnInit {
     this.getAuditCompanies();
   }
 
+  // Get the list of audit companies
   getAuditCompanies(): void {
     this.loadingAuditCompanies = true;
     this.auditCompaniesService.getAuditCompanies().subscribe(
@@ -44,6 +45,7 @@ export class AuditCompaniesComponent implements OnInit {
     );
   }
 
+  //get audits list for an audit company on button click
   showAuditModal(auditCompany: any): void {
     this.selectedAuditCompany = auditCompany;
     this.loadingAudits = true;
@@ -63,14 +65,17 @@ export class AuditCompaniesComponent implements OnInit {
       );
   }
 
+  //close audit modal
   closeAuditModal(): void {
     $('#auditModal').modal('hide');
     this.auditCompanyAudits = [];
     this.selectedAuditCompany = null;
   }
 
+  //pagination controls
   onPageChange(page: number): void {
     this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   getPaginatedAuditCompanies(): any[] {
@@ -79,22 +84,5 @@ export class AuditCompaniesComponent implements OnInit {
       startIndex,
       startIndex + this.itemsPerPage
     );
-  }
-
-  getPageNumbers(): number[] {
-    return Array(Math.ceil(this.auditCompanies.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage <
-      Math.ceil(this.auditCompanies.length / this.itemsPerPage)
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
   }
 }

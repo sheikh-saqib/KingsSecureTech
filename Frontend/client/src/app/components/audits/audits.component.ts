@@ -44,6 +44,7 @@ export class AuditsComponent implements OnInit {
     this.getAuditCompanies();
   }
 
+  // get list of all audits
   getAudits(): void {
     this.loadingAudits = true;
     this.auditService.getAudits().subscribe(
@@ -60,6 +61,7 @@ export class AuditsComponent implements OnInit {
     );
   }
 
+  //get all properties to load the properties filter
   getProperties(): void {
     this.propertiesService.getProperties().subscribe(
       (data) => {
@@ -72,6 +74,7 @@ export class AuditsComponent implements OnInit {
     );
   }
 
+  //get all audit companies to load the audit companies filter
   getAuditCompanies(): void {
     this.auditCompaniesService.getAuditCompanies().subscribe(
       (data) => {
@@ -84,6 +87,7 @@ export class AuditsComponent implements OnInit {
     );
   }
 
+  //apply filters to the list
   applyFilters(): void {
     this.filteredAudits = this.audits.filter(
       (audit) =>
@@ -96,6 +100,7 @@ export class AuditsComponent implements OnInit {
     this.currentPage = 1;
   }
 
+  //get the list of all the fire doors for the selected audit on button click
   showFireDoorsModal(audit: any): void {
     this.selectedAudit = audit;
     this.loadingFireDoors = true;
@@ -113,12 +118,14 @@ export class AuditsComponent implements OnInit {
     );
   }
 
+  //close firedoors modal
   closeFireDoorsModal(): void {
     $('#fireDoorModal').modal('hide');
     this.auditFireDoors = [];
     this.selectedAudit = null;
   }
 
+  //get the list of all the risks for the selected audit on button click
   showRisksModal(audit: any): void {
     this.selectedAudit = audit;
     this.loadingRisks = true;
@@ -136,39 +143,23 @@ export class AuditsComponent implements OnInit {
     );
   }
 
+  //close risks modal
   closeRisksModal(): void {
     $('#risksModal').modal('hide');
     this.auditRisks = [];
     this.selectedAudit = null;
   }
 
+  //pagination controls
   onPageChange(page: number): void {
     this.currentPage = page;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
   getPaginatedAudits(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredAudits.slice(
       startIndex,
       startIndex + this.itemsPerPage
     );
-  }
-
-  getPageNumbers(): number[] {
-    return Array(Math.ceil(this.filteredAudits.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  hasNextPage(): boolean {
-    return (
-      this.currentPage <
-      Math.ceil(this.filteredAudits.length / this.itemsPerPage)
-    );
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 1;
   }
 }

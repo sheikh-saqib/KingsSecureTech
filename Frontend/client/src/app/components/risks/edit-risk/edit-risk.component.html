@@ -1,34 +1,32 @@
 <div class="container">
     <h2 class="my-4">Edit Risk</h2>
     <form [formGroup]="riskForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="fireDoorId">Risk ID <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="riskId" formControlName="riskId" disabled />
-            </div>
-  
-            <div class="form-group col-md-6">
-                <label for="barcode">Observation</label>
-                <input type="text" class="form-control" id="observation" formControlName="observation" />
-            </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="riskId">Risk ID <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="riskId" formControlName="riskId" disabled />
         </div>
   
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="doorMaterial">Recommendation</label>
-                <input type="text" class="form-control" id="recommendation" formControlName="recommendation" />
-            </div>
-  
-            <div class="form-group col-md-6">
-                <label for="priority">Priority <span class="text-danger">*</span></label>
-                <select class="form-control" formControlName="priority" id="priority" required>
-                    <option value="" disabled>Select Priority</option>
-                    <option *ngFor="let option of priorityOptions" [value]="option.value">{{ option.label }}</option>
-                </select>
-            </div>
-            
-            
+        <div class="form-group col-md-6">
+          <label for="observation">Observation <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="observation" formControlName="observation" />
         </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="recommendation">Recommendation <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="recommendation" formControlName="recommendation" />
+        </div>
+  
+        <div class="form-group col-md-6">
+          <label for="priority">Priority <span class="text-danger">*</span></label>
+          <select class="form-control" formControlName="priority" id="priority" required>
+            <option value="" disabled>Select Priority</option>
+            <option *ngFor="let option of priorityOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+      </div>
   
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -38,7 +36,6 @@
                     <option *ngFor="let client of clients" [value]="client.clientId">{{ client.name }}</option>
                 </select>
             </div>
-  
             <div class="form-group col-md-6" *ngIf="showProperties">
                 <label for="propertyId">Property <span class="text-danger">*</span></label>
                 <select class="form-control" id="propertyId" formControlName="propertyId" (change)="onPropertyChange($event.target.value)">
@@ -76,6 +73,11 @@
             </div>
         </div>
   
+            <!-- Message for mandatory fields -->
+    <div class="text-danger mt-2 mb-2" *ngIf="!riskForm.valid && riskForm.touched">
+        Please fill out all mandatory fields before submitting.
+      </div>
+
         <button type="submit" class="btn btn-primary" [disabled]="!riskForm.valid">Update Risk</button>
         <button type="button" class="btn btn-secondary ml-3" (click)="onEditCancel()">Cancel</button>
     </form>
