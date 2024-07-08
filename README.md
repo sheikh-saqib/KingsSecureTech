@@ -1,6 +1,6 @@
 # Kings Secure Tech
 
-Welcome to Kings Secure Tech! This project consists of a backend API built with ASP.NET Core and a frontend client built with Angular.
+This project consists of a backend API built with ASP.NET Core and a frontend client built with Angular.
 
 ## Prerequisites
 
@@ -22,5 +22,5 @@ cd frontend/client
 npm install
 ng serve
 cd ../..
-dotnet run --project backend/YourProjectName
+dotnet run --project backend/KingsSecureTech
 
